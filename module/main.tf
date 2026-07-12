@@ -2,10 +2,15 @@
 # Self-Service Recovery Points
 ##################################################
 
-# TODO: Self-Service has moved to separate servers.
-# The API schema and authentication requirements may need updates.
-# These resources exist in the provider but connectivity configuration
-# may require additional provider settings.
+# Connection / authentication (verified against nutanix/nutanix 2.4.2):
+# Self-Service (Calm) resources use the Calm v3 product API and authenticate
+# through the STANDARD provider `endpoint`/credentials against Prism Central.
+# There is NO separate self-service endpoint or extra provider argument, and
+# the provider CANNOT deploy Self-Service itself — only Day-2 application
+# operations (recovery-point, restore, provision/patch/custom-action) are
+# supported. Blueprints and applications must already exist in Self-Service;
+# there is no blueprint-authoring resource. Self-Service is exempt from the
+# Q4-CY2026 v2 deprecation because no v2 replacement exists.
 
 resource "nutanix_self_service_app_recovery_point" "recovery_point" {
   for_each = var.recovery_points

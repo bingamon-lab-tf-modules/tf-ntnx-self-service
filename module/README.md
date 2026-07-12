@@ -50,6 +50,7 @@ No modules.
 | <a name="output_app_snapshots"></a> [app\_snapshots](#output\_app\_snapshots) | Self-Service application snapshot/recovery-point entities returned by enabled data lookups, keyed by lookup label. |
 | <a name="output_app_uuid_by_name"></a> [app\_uuid\_by\_name](#output\_app\_uuid\_by\_name) | Map of Self-Service application name to UUID derived from enabled data lookups. |
 | <a name="output_apps"></a> [apps](#output\_apps) | Self-Service application details returned by enabled data lookups, keyed by lookup label. |
+| <a name="output_outputs"></a> [outputs](#output\_outputs) | Aggregate of all module outputs (spec §7.6 contract, consumed by the landing zone as module.<x>.outputs). |
 | <a name="output_recovery_points"></a> [recovery\_points](#output\_recovery\_points) | Map of created Self-Service recovery points. |
 | <a name="output_restores"></a> [restores](#output\_restores) | Map of Self-Service restore operations. |
 | <a name="output_self_service_summary"></a> [self\_service\_summary](#output\_self\_service\_summary) | Summary of Self-Service resources managed by this module. |

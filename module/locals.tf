@@ -16,4 +16,11 @@ locals {
     for k, snap in data.nutanix_self_service_app_snapshots.snapshots :
     k => snap.entities
   }
+
+  # Application UUID (the resource id) of each module-created app_provision, so
+  # app_patches / app_custom_actions can resolve a `provision` reference to a
+  # live app UUID (module-created provisions first, raw uuid passthrough otherwise).
+  provision_app_uuids = {
+    for k, v in nutanix_self_service_app_provision.app_provision : k => v.id
+  }
 }

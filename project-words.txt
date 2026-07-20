@@ -79,3 +79,4 @@ trivycache
 utilize
 vcpus
 prek
+nixos

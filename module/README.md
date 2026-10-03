@@ -58,14 +58,14 @@ actions, `app_name`).
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10.0 |
 | <a name="requirement_nutanix"></a> [nutanix](#requirement\_nutanix) | >= 2.4.2 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_nutanix"></a> [nutanix](#provider\_nutanix) | 2.4.2 |
 
 ## Modules
@@ -75,7 +75,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [nutanix_self_service_app_custom_action.app_custom_action](https://registry.terraform.io/providers/nutanix/nutanix/latest/docs/resources/self_service_app_custom_action) | resource |
 | [nutanix_self_service_app_patch.app_patch](https://registry.terraform.io/providers/nutanix/nutanix/latest/docs/resources/self_service_app_patch) | resource |
 | [nutanix_self_service_app_provision.app_provision](https://registry.terraform.io/providers/nutanix/nutanix/latest/docs/resources/self_service_app_provision) | resource |
@@ -87,7 +87,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_app_custom_actions"></a> [app\_custom\_actions](#input\_app\_custom\_actions) | Map of one-shot Self-Service (Calm) blueprint-defined custom day-2 actions<br/>run against provisioned applications. IMPERATIVE ONE-SHOT: creating an entry<br/>RUNS the action once; there is no continuous reconciliation. Re-running means<br/>adding a NEW map key (entries are append-only trigger history) — a destroy<br/>does NOT undo the action, and renaming a key re-executes it. Results<br/>(runlog\_uuid) are stored in state.<br/><br/>v1 Calm-API product resource; no v2 exists, exempt from the Q4-CY2026 v2<br/>mandate (spec §5). Day-2 ops against EXISTING blueprints only — the provider<br/>cannot deploy Self-Service or manage blueprints/marketplace (spec §12).<br/><br/>Reference the target application by exactly one of `provision` (a key of<br/>var.app\_provisions, resolved to that module-created app's UUID), `app_uuid`,<br/>or `app_name`. action\_name is the blueprint-defined action to run. | <pre>map(object({<br/>    provision   = optional(string)<br/>    app_name    = optional(string)<br/>    app_uuid    = optional(string)<br/>    action_name = string<br/>  }))</pre> | `{}` | no |
 | <a name="input_app_lookups"></a> [app\_lookups](#input\_app\_lookups) | Map of Self-Service applications to look up via the nutanix\_self\_service\_app data source (requires app\_uuid). Only evaluated when enable\_data\_lookups is true. The map key is a caller-chosen label. | <pre>map(object({<br/>    app_uuid = string<br/>  }))</pre> | `{}` | no |
 | <a name="input_app_patches"></a> [app\_patches](#input\_app\_patches) | Map of one-shot Self-Service (Calm) patch (update-config) actions run<br/>against provisioned applications. IMPERATIVE ONE-SHOT: creating an entry<br/>RUNS the patch once; there is no continuous reconciliation. Re-running means<br/>adding a NEW map key (entries are append-only trigger history) — a destroy<br/>does NOT undo the patch, and renaming a key re-executes it. Results<br/>(runlog\_uuid) are stored in state.<br/><br/>v1 Calm-API product resource; no v2 exists, exempt from the Q4-CY2026 v2<br/>mandate (spec §5). Day-2 ops against EXISTING blueprints only — the provider<br/>cannot deploy Self-Service or manage blueprints/marketplace (spec §12).<br/><br/>Reference the target application by exactly one of `provision` (a key of<br/>var.app\_provisions, resolved to that module-created app's UUID) or `app_uuid`<br/>(a raw passthrough UUID). config\_name and patch\_name identify the patch<br/>action (config\_name must equal patch\_name for single-VM blueprints). The<br/>optional vm\_config/categories/disks/nics blocks carry the patch payload. | <pre>map(object({<br/>    provision   = optional(string)<br/>    app_uuid    = optional(string)<br/>    config_name = string<br/>    patch_name  = string<br/>    vm_config = optional(object({<br/>      memory_size_mib      = optional(number)<br/>      num_sockets          = optional(number)<br/>      num_vcpus_per_socket = optional(number)<br/>    }))<br/>    categories = optional(list(object({<br/>      operation = string<br/>      value     = optional(string)<br/>    })))<br/>    disks = optional(list(object({<br/>      operation     = string<br/>      disk_size_mib = optional(number)<br/>    })))<br/>    nics = optional(list(object({<br/>      index       = optional(number)<br/>      operation   = optional(string)<br/>      subnet_uuid = optional(string)<br/>    })))<br/>  }))</pre> | `{}` | no |
@@ -100,7 +100,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_app_custom_actions"></a> [app\_custom\_actions](#output\_app\_custom\_actions) | Map of Self-Service one-shot custom actions run by this module, keyed by action label. |
 | <a name="output_app_patches"></a> [app\_patches](#output\_app\_patches) | Map of Self-Service one-shot patch actions run by this module, keyed by patch label. |
 | <a name="output_app_provision_ids"></a> [app\_provision\_ids](#output\_app\_provision\_ids) | Map of Self-Service app provision label to the launched application UUID (the resource id). |

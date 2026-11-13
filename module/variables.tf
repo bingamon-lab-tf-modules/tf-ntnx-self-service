@@ -84,22 +84,22 @@ variable "app_provisions" {
   description = <<-EOT
     Map of Self-Service (Calm) application provisions launched from EXISTING
     blueprints. The provider CANNOT deploy Self-Service or create/manage
-    blueprints or marketplace items (spec §12) — Day-2 app operations only.
+    blueprints or marketplace items (spec §12) - Day-2 app operations only.
     These are v1 Calm-API product resources; no v2 exists and the family is
     exempt from the Q4-CY2026 v2 mandate (spec §5).
 
-    LIFECYCLE / DESTROY SEMANTICS (verified against nutanix/nutanix 2.4.2):
+    LIFECYCLE / DESTROY SEMANTICS (verified against nutanix/nutanix 2.5.1):
     create launches a REAL application and the resource id becomes the launched
     application UUID. `tofu destroy` DELETES the running application, or
     soft-deletes it when soft_delete = true. Provisions are NOT disposable
-    trigger entries like patches/custom actions — removing a map entry tears
+    trigger entries like patches/custom actions - removing a map entry tears
     down (or soft-deletes) the live app, and renaming a key destroys the old
     app and provisions a new one.
 
     Reference the source blueprint by exactly one of bp_name or bp_uuid;
     app_name names the launched application. `action` optionally runs a system
     action (start/stop/restart) after provisioning. `runtime_editables` carries
-    the blueprint's runtime-editable values per the 2.4.2 schema.
+    the blueprint's runtime-editable values per the 2.5.1 schema.
   EOT
   type = map(object({
     app_name        = string

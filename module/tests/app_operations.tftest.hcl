@@ -174,3 +174,98 @@ run "app_custom_action_ambiguous_reference" {
 
   expect_failures = [var.app_custom_actions]
 }
+
+# Test 6: Provision with runtime_editables (credentials, variables, app_profile)
+# and full patch payload (vm_config, categories, disks, nics) against v2.5.1 schema.
+run "app_ops_runtime_editables_and_full_patch" {
+  command = plan
+
+  variables {
+    app_provisions = {
+      db = {
+        app_name        = "db-stack-prod"
+        app_description = "Managed database stack"
+        bp_uuid         = "22222222-2222-2222-2222-222222222222"
+        soft_delete     = true
+        runtime_editables = {
+          app_profile = [
+            {
+              name = "Default"
+              uuid = "33333333-3333-3333-3333-333333333333"
+            }
+          ]
+          credential_list = [
+            {
+              name  = "admin_cred"
+              type  = "PASSWORD"
+              value = "mock-calm-secret"
+            }
+          ]
+          variable_list = [
+            {
+              name  = "db_port"
+              type  = "INT"
+              value = "5432"
+            }
+          ]
+        }
+      }
+    }
+    app_patches = {
+      db_resize = {
+        app_uuid    = "44444444-4444-4444-4444-444444444444"
+        config_name = "Resize"
+        patch_name  = "Resize"
+        vm_config = {
+          memory_size_mib      = 16384
+          num_sockets          = 2
+          num_vcpus_per_socket = 4
+        }
+        categories = [
+          {
+            operation = "add"
+            value     = "Environment:Production"
+          }
+        ]
+        disks = [
+          {
+            operation     = "add"
+            disk_size_mib = 102400
+          }
+        ]
+        nics = [
+          {
+            index       = 0
+            operation   = "add"
+            subnet_uuid = "55555555-5555-5555-5555-555555555555"
+          }
+        ]
+      }
+    }
+  }
+
+  assert {
+    condition     = nutanix_self_service_app_provision.app_provision["db"].soft_delete == true
+    error_message = "Expected provision soft_delete to be true"
+  }
+
+  assert {
+    condition     = nutanix_self_service_app_provision.app_provision["db"].runtime_editables[0].credential_list[0].name == "admin_cred"
+    error_message = "Expected runtime_editables credential_list name to round-trip"
+  }
+
+  assert {
+    condition     = nutanix_self_service_app_provision.app_provision["db"].runtime_editables[0].variable_list[0].value == "5432"
+    error_message = "Expected runtime_editables variable_list value to round-trip"
+  }
+
+  assert {
+    condition     = nutanix_self_service_app_patch.app_patch["db_resize"].disks[0].disk_size_mib == 102400
+    error_message = "Expected patch disk_size_mib to round-trip"
+  }
+
+  assert {
+    condition     = output.app_provisions["db"].bp_uuid == "22222222-2222-2222-2222-222222222222"
+    error_message = "Expected output app_provisions bp_uuid to match input"
+  }
+}

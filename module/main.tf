@@ -2,7 +2,7 @@
 # Self-Service Recovery Points
 ##################################################
 
-# Connection / authentication (verified against nutanix/nutanix 2.4.2):
+# Connection / authentication (verified against nutanix/nutanix 2.5.1):
 # Self-Service (Calm) resources use the Calm v3 product API and authenticate
 # through the STANDARD provider `endpoint`/credentials against Prism Central.
 # There is NO separate self-service endpoint or extra provider argument, and
